@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#container{
+    width: 714px; /*7개의 셀마다 2픽셀씩 차지!!*/
+    height: 614px;
+    margin: auto;
+    background-color: yellowgreen;
+    overflow: hidden;
+}
+#header{
+    margin: auto;
+    width: 714px;
+    height: 50px;
+    text-align: center;
+    background-color: papayawhip;
+}
+</style>
+<script src="./Cell.js"></script>
+<script src="../js/lib.js"></script>
+<script>
+var container;
+var header;
+var cellArray=[]; //42개의 달력 셀을 보관할 배열!!
+var days=["Sun","Mon","Tue","Wed","Thur","Fri","Sat"];
+var d=new Date(); //자바스크립트의 내장 객체중 Date 객체 생성!!
+var startDayOfMonth; //각 월의 시작요일!!
+var endDate; //각 월의 마지막 날짜를 구한다(28,29,30,31)
+//날짜를 조작할때 1일의 이전일인 0일로 놓으면, 0일은 존재하지 않는 일이므로,
+//이전달의 마지막 일로 표현됨...
+//obj.setDate(0);
+//개발자가 생성시 아무런 매개변수를 전달하지 않으면 Default는 현재 
+//날짜 정보를 가지고 객체의 내용을 구성한다!!!
+addEventListener("load",function(){
+    container=document.getElementById("container");
+    header=document.getElementById("header");
+
+    createRect();
+    printDiaryTitle(); // 달력의 제목 출력!!
+    getStartDay();
+    printDate();
+});
+function getStartDay(){
+    var obj = new Date();
+    obj.setDate(1); 
+    startDayOfMonth=obj.getDay(); //시작요일 구하기!!
+
+    endDate= getEndDate(obj.getMonth()); //현재 달력의 월!
+}
+
+function createRect(){
+    for(var a =0; a<days.length; a++){
+        new Cell(container,100,100,days[a],"yellowgreen","green")
+    }
+    //container,width,height,dateText,background,borderColor
+    for(var i=0; i<42;i++){ //7개씩 6층짜리~~
+        var cell = new Cell(container,100,100,"","yellow","green");
+        cellArray.push(cell);
+    }
+}
+//현재 년,월일 출력한다!!
+function printDiaryTitle(){
+    //날짜 객체로 부터 년도 출력    
+    var yy = d.getFullYear(); // 날짜 객체로 부터 년도 추출
+    var mm = d.getMonth(); // 날짜 객체로 부터 월 추출
+    //월을 출력할때만 +1을 처리해야 안 헷갈린다!!
+    header.innerHTML=yy+"년 "+getDateString(mm+1)+"월";
+}
+
+//현재 달의 일수를 출력한다!! 1~31까지
+//날짜를 출력하려면, 각 월의 시작요일을 먼저 알아야 한다!!
+//해결책? -날짜 객체는 얼마든지 조작이 가능하므로, 현재 날짜는 1일로
+//조작하고 , 그 조작된 객체에게 무슨 요일인지 물어보자!!
+function printDate(){
+    //각 셀의 날짜를 출력하자!!
+    var n=1;
+    for(var i=0; i<cellArray.length; i++){
+        //무조건 찍지말고, 이번달의 시작요일이상일때부터 찍자!!
+        if(i>=startDayOfMonth){         
+            if(n<=endDate){
+                cellArray[i].h1.innerText=n;
+                n++;
+            }
+        }
+    }
+    // document.write("이번달의 1  일은"+obj.getDay()+"요일입니다")
+}
+
+</script>
+</head>
+<body>
+    <div id="header">2020 6</div>
+    <div id="container"></div>
+</body>
+</html>

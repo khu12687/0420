@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#wrapper{
+    
+}
+#header{
+    width:100%;
+    height:50px;
+}
+</style>
+<script src="./Cell.js"></script>
+<script>
+var wrapper;
+var container;
+var header;
+var cellWidth=100;
+var cellHeight=100;
+var containerWidth=(cellWidth+2)*7;
+var containerHeight=(cellHeight+2)*6; //달력의 층수는 6층이 max
+addEventListener("load",function(){
+    wrapper=document.getElementById("wrapper");
+    container=document.getElementById("container");
+    header=document.getElementById("header");
+    createRect();
+});
+function createRect(){
+    header.style.height=50+"px";
+    //동적으로 셀을 생성하여 container 에 부착
+    wrapper.style.margin="auto"; 
+    wrapper.style.width=containerWidth+"px";
+    wrapper.style.height=(parseInt(header.style.height)+containerHeight)+"px";
+    wrapper.style.background="yellowgreen";
+}
+</script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="container">
+            <span>◀</span>
+            <span>2020 4</span>
+            <span>▶</span>
+        </div>    
+    </div>
+</body>
+</html>
